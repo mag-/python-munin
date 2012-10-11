@@ -24,13 +24,8 @@ class MuninCassandraPlugin(MuninPlugin):
             self.keyspaces = ["system"]
     
     def autoconf(self):
-        try:
-            self.cfstats()
-        except:
-            return False
-        else:
-            return True
-    
+        return self.cfstats()
+
     def execute_nodetool(self, cmd):
         p = Popen([self.nodetool_path, "-host", self.host, cmd], stdout=PIPE)
         output = p.communicate()[0]
