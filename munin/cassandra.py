@@ -22,6 +22,15 @@ class MuninCassandraPlugin(MuninPlugin):
         self.keyspaces = [x for x in os.environ.get('CASSANDRA_KEYSPACE', '').split(',') if x]
         if self.keyspaces==None:
             self.keyspaces = ["system"]
+    
+    def autoconf(self):
+        try:
+            self.cfstats()
+        except:
+            return False
+        else:
+            return True
+    
     def execute_nodetool(self, cmd):
         p = Popen([self.nodetool_path, "-host", self.host, cmd], stdout=PIPE)
         output = p.communicate()[0]

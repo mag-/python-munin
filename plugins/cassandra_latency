@@ -8,14 +8,6 @@ class CassandraLatencyPlugin(MuninCassandraPlugin):
     args = "--base 1000 -l 0"
     vlabel = "seconds"
 
-    def autoconf(self):
-        try:
-            self.cfstats()
-        except:
-            return False
-        else:
-            return True
-
     @property
     def fields(self):
         fs = []
