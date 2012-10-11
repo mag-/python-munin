@@ -15,10 +15,13 @@ class MuninCassandraPlugin(MuninPlugin):
 
     def __init__(self, *args, **kwargs):
         super(MuninCassandraPlugin, self).__init__(*args, **kwargs)
-        self.nodetool_path = os.environ["NODETOOL_PATH"]
+        self.nodetool_path = os.environ.get("NODETOOL_PATH")
+        if self.nodetool_path==None:
+            self.nodetool_path = "nodetool"
         self.host = socket.gethostname()
         self.keyspaces = [x for x in os.environ.get('CASSANDRA_KEYSPACE', '').split(',') if x]
-
+        if self.keyspaces==None:
+            self.keyspaces = ["system"]
     def execute_nodetool(self, cmd):
         p = Popen([self.nodetool_path, "-host", self.host, cmd], stdout=PIPE)
         output = p.communicate()[0]
